@@ -1,9 +1,10 @@
-#!/usr/bin/env node
+#!/usr/bin/env nodejs
 
 var opts = require('nomnom')
 	.option('dir', {
 		abbr: 'd',
-		help: 'The directory containing images'
+		help: 'The directory containing images',
+		required: true,
 	})
 	.parse(),
 

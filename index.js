@@ -14,6 +14,7 @@ var opts = require('nomnom')
 	_ = require('underscore'),
 
 	formats = ['jpg', 'jpeg', 'png'],
+	port = 16217,
 
 	image;
 
@@ -45,4 +46,5 @@ randomImage = function(imageDir) {
 http.createServer(function (req, res) {
 	res.writeHead(200, {'Content-Type': 'image/JPEG'});
 	res.end(randomImage(opts.dir));
-}).listen(16217, '127.0.0.1');
+	console.log('Listening on port %s', port);
+}).listen(port, '127.0.0.1');

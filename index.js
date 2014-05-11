@@ -38,14 +38,54 @@ randomImage = function(imageDir) {
 			return images[rand];
 		})(images);
 
+	if(!image) {
+		console.log('Could not find any images!!');
+	}
+
 	console.log('Displaying image: %s', image);
 
-	return fs.readFileSync(path.join(imageDir, image));
+	return image;
 };
 
 http.createServer(function (req, res) {
+
+	var host = req.headers.host,
+		url = req.url,
+		imagePattern = /^\/pug\/(.+)$/,
+		matches = imagePattern.exec(url),
+		dir = opts.dir,
+		output, image;
+
+	if(matches) {
+		// serve a single image
+		var file = matches[1];
+		if(fs.existsSync(path.join(dir, file))) {
+			res.writeHead(200, {'Content-Type': 'image/JPEG'});
+			image = path.join(opts.dir, file);
+			output = fs.readFileSync(image);
+			console.log('Displaying image: %s', image);
+			res.end(output);
+			return;
+		} else {
+			console.log('%s not found', file);
+			res.writeHead(404);
+			res.end('404');
+			return;
+		}
+	}
+
+	if(/^\/random[\/]?$/.test(url)) {
+		// serve json
+		res.writeHead(200, {'Content-Type': 'application/JSON'});
+		image = host + '/pug/' + randomImage(dir);
+		output = JSON.stringify({pug: image});
+		res.end(output);
+		console.log('Providing JSON for %s', image);
+		return;
+	}
+
 	res.writeHead(200, {'Content-Type': 'image/JPEG'});
-	res.end(randomImage(opts.dir));
+	res.end(fs.readFileSync(path.join(opts.dir, randomImage(dir))));
 }).listen(port, '0.0.0.0');
 
 console.log('Listening on port %s', port);

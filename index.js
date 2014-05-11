@@ -29,7 +29,6 @@ randomImage = function(imageDir) {
 				return false;
 			}
 			extension = matches[1];
-			process.stdout.write('.');
 			return _.contains(formats, matches[1]);
 		}),
 
@@ -47,6 +46,6 @@ randomImage = function(imageDir) {
 http.createServer(function (req, res) {
 	res.writeHead(200, {'Content-Type': 'image/JPEG'});
 	res.end(randomImage(opts.dir));
-}).listen(port, '127.0.0.1');
+}).listen(port, '0.0.0.0');
 
 console.log('Listening on port %s', port);

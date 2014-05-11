@@ -77,7 +77,7 @@ http.createServer(function (req, res) {
 	if(/^\/random[\/]?$/.test(url)) {
 		// serve json
 		res.writeHead(200, {'Content-Type': 'application/JSON'});
-		image = host + '/pug/' + randomImage(dir);
+		image = 'http://' + host + '/pug/' + randomImage(dir);
 		output = JSON.stringify({pug: image});
 		res.end(output);
 		console.log('Providing JSON for %s', image);

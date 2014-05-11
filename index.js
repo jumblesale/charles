@@ -51,7 +51,7 @@ http.createServer(function (req, res) {
 
 	var host = req.headers.host,
 		url = req.url,
-		imagePattern = /^\/pug\/(.+)$/,
+		imagePattern = /^\/pug\/([^\/]+)$/,
 		matches = imagePattern.exec(url),
 		dir = opts.dir,
 		output, image;
